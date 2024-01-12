@@ -2,9 +2,29 @@ import express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 
-import type { AllTableData } from './types';
+import type { AllTableData, HeaderComponent, TableComponent } from './types';
 
 import { delay, format } from './utils';
+
+export class DataViewer {
+  private dataView: AllTableData[] = [];
+
+  public addData(data: AllTableData) {
+    this.dataView.push(data);
+  }
+
+  public addTable(data: TableComponent['data']){
+    this.dataView.push({type: 'table', data});
+  }
+  
+  public addHeader(data: HeaderComponent['data']){
+    this.dataView.push({type: 'header', data});
+  }
+
+  public start(){
+    startViewServer(this.dataView);
+  }
+}
 
 export async function startViewServer(dataView: AllTableData[]) {
   const app = express();
