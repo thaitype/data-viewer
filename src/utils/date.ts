@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 const dateFormats = 'YYYY-MM-DD HH:mm:ss';
 
