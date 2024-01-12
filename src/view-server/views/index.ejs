@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bulma.min.css" />
 
+  <!-- https://github.com/apvarun/toastify-js -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
   <style>
     .my-container {
       margin: 50px;
@@ -65,7 +68,7 @@
                 <% view.data.forEach(entry => { %>
                 <tr>
                 <% Object.values(entry).forEach(value => { %>
-                <td><% if (value instanceof Date) { %> <%= formatDate(value) %> <% } else { %> <%= value %> <% } %></td>
+                <td> <%= format(value) %></td>
                 <% }); %>
                 </tr>
                 <% }); %>
@@ -86,13 +89,48 @@
   <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bulma.min.js"></script>
   <script src="https://cdn.socket.io/4.7.3/socket.io.min.js"></script>
+  <!-- https://github.com/apvarun/toastify-js -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
   <script>
+    // https://datatables.net/examples/api/row_details.html
+    // Formatting function for row details - modify as you need
+function format(d) {
+  // `d` is the original data object for the row
+  return (
+      '<dl>' +
+      '<dt>Full name:</dt>' +
+      '<dd>' +
+      d.name +
+      '</dd>' +
+      '<dt>Extension number:</dt>' +
+      '<dd>' +
+      d.extn +
+      '</dd>' +
+      '<dt>Extra info:</dt>' +
+      '<dd>And any further details here (images etc)...</dd>' +
+      '</dl>'
+  );
+}
+
     $(document).ready(() => {
       $('.dataTable').DataTable({
         pageLength: 10,
+        // paging: false,
         scrollX: true,
-      });
+      }).on('click', 'td.dt-control', function (e) {
+        let tr = e.target.closest('tr');
+        let row = table.row(tr);
+     
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+        }
+        else {
+            // Open this row
+            row.child(format(row.data())).show();
+        }
+    });
       // Initial adjustment on page load
       adjustDivWidth();
 
@@ -104,16 +142,60 @@
       }
     });
 
+    function getToastConfig(type){
+      switch(type){
+        case 'success':
+          return {
+            style: {
+              background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+          }
+        case 'error':
+          return {
+            duration: 3000,
+            style: {
+              background: "linear-gradient(to right, #ff5f6d, #f76acd)",
+            }
+          }
+        case 'info':
+          return {
+            style: {
+              background: "linear-gradient(to right, #6b5d00, #ab7f50)",
+            }
+          }
+        default:
+          return {}
+      }
+    }
+
+    function showNotification(message, type = 'success') {
+      const toastConfig = getToastConfig(type);
+      Toastify({
+        gravity: 'bottom',
+        position: 'center',
+        text: message,
+        duration: 1000,
+        ...toastConfig
+  
+      }).showToast();
+      console.log(message);
+    }
+
     const socket = io();
-    socket.on('reload', (msg) => {
+    socket.on('startReload', (msg) => {
       window.location.reload();
     });
     socket.on('connect', () => {
-      console.log('Live server connected');
+      showNotification('Live server connected');
     });
     socket.on('disconnect', () => {
-      console.log('Disconnected, attempting to reload page');
+      showNotification('Disconnected, attempting to reload page');
     });
+    socket.on('connect_error', (err) => {
+      showNotification('Cannot connect to the server, reason: ' + err.message, 'error');
+    });
+
+
   </script>
 </body>
 

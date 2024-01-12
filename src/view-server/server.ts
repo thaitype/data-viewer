@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 
 import type { AllTableData } from './types';
 
-import { delay, formatDate } from './utils';
+import { delay, format } from './utils';
 
 export async function startViewServer(dataView: AllTableData[]) {
   const app = express();
@@ -27,7 +27,7 @@ export async function startViewServer(dataView: AllTableData[]) {
 
   // Middleware to add the formatDate function to locals
   app.use((req, res, next) => {
-    res.locals.formatDate = formatDate;
+    res.locals.format = format;
     next();
   });
 
@@ -41,6 +41,6 @@ export async function startViewServer(dataView: AllTableData[]) {
     while (!isClientConnected) {
       await delay(200);
     }
-    io.emit('reload');
+    io.emit('startReload');
   });
 }
