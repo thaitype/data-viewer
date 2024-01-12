@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamic Table Example</title>
+  <title>data-viewer</title>
   <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"> -->
 
   <!-- https://datatables.net/examples/styling/bulma.html -->
@@ -17,10 +17,23 @@
       margin: 50px;
     }
 
-    h1 {
+    h1,h2 {
       margin-bottom: 40px;
-      font-size: 18pt;
       font-weight: bold;
+    }
+
+    h1 {
+      font-size: 30pt;
+    }
+
+    h2 {
+      font-size: 20pt;
+    }
+
+    footer {
+      color: #ccc;
+      margin-top: 50px;
+      text-align: center;
     }
 
     .dataTables_wrapper {
@@ -34,27 +47,38 @@
 
 <body>
   <div class="my-container">
-    <h1>Dynamic Table Example 2</h1>
-    <table class="dataTable table is-striped display nowrap is-fullwidth" style="width: 100%">
-      <thead>
-        <tr>
-          <% if (tableData.length > 0) { %>
-          <% Object.keys(tableData[0]).forEach(header => { %>
-          <th><%= header %></th>
-          <% }); %>
-          <% } %>
-        </tr>
-      </thead>
-      <tbody>
-        <% tableData.forEach(entry => { %>
-        <tr>
-          <% Object.values(entry).forEach(value => { %>
-          <td><% if (value instanceof Date) { %> <%= formatDate(value) %> <% } else { %> <%= value %> <% } %></td>
-          <% }); %>
-        </tr>
-        <% }); %>
-      </tbody>
-    </table>
+
+    <% for(const view of dataView) { %>
+      <% if (view.type === 'table') { %>
+    
+        <% if (view.data.length > 0) { %>
+          <table class="dataTable table is-striped display nowrap is-fullwidth" style="width: 100%">
+            <thead>
+                <tr>
+                <% Object.keys(view.data[0]).forEach(header => { %>
+                <th><%= header %></th>
+                <% }); %>
+                </tr>
+            </thead>
+            <tbody>
+                <% view.data.forEach(entry => { %>
+                <tr>
+                <% Object.values(entry).forEach(value => { %>
+                <td><% if (value instanceof Date) { %> <%= formatDate(value) %> <% } else { %> <%= value %> <% } %></td>
+                <% }); %>
+                </tr>
+                <% }); %>
+            </tbody>
+            </table>
+        <% } else { %>
+          <p>No data found</p>
+        <% } %>
+  
+      <% } else if (view.type === 'header') { %>
+        <h2><%= view.data %></h2>
+      <% } %>
+    <% } %>
+    <footer>By @thaitype/data-viewer</footer>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

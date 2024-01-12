@@ -5,7 +5,20 @@ import { createServer } from 'node:http';
 import { formatDate } from '../utils/date';
 export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export async function startViewServer<T extends Record<string, unknown> = any>(data: Record<string, unknown>[]) {
+export interface TableComponent {
+  type: 'table';
+  data: Record<string, unknown>[];
+}
+export interface HeaderComponent {
+  type: 'header';
+  data: string;
+}
+export type AllTableData = TableComponent | HeaderComponent;
+
+export async function startViewServer(
+  // data: Record<string, unknown>[],
+  dataList: AllTableData[],
+) {
   const app = express();
   const server = createServer(app);
   const io = new Server(server);
@@ -30,9 +43,11 @@ export async function startViewServer<T extends Record<string, unknown> = any>(d
     next();
   });
 
+  console.log(dataList);
+
   // Define a route to render the HTML page
   app.get('/', (req, res) => {
-    res.render('index', { tableData: data });
+    res.render('index', { dataView: dataList });
   });
 
   server.listen(port, async () => {
