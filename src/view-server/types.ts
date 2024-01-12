@@ -1,4 +1,3 @@
-
 export interface TableComponent {
   type: 'table';
   data: Record<string, unknown>[];

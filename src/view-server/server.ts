@@ -2,13 +2,11 @@ import express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 
+import type { AllTableData } from './types';
+
 import { delay, formatDate } from './utils';
-import { AllTableData } from './types';
 
-
-export async function startViewServer(
-  dataView: AllTableData[],
-) {
+export async function startViewServer(dataView: AllTableData[]) {
   const app = express();
   const server = createServer(app);
   const io = new Server(server);
