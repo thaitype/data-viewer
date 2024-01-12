@@ -1,0 +1,198 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>data-viewer</title>
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"> -->
+
+  <!-- https://datatables.net/examples/styling/bulma.html -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bulma.min.css" />
+
+  <!-- https://github.com/apvarun/toastify-js -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+  <style>
+    .my-container {
+      margin: 50px;
+    }
+
+    h1,h2 {
+      margin-top: 30px;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 30pt;
+    }
+
+    h2 {
+      font-size: 20pt;
+    }
+
+    footer {
+      color: #ccc;
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    .dataTables_wrapper {
+      border: 1px solid #ddd;
+      padding: 24px;
+      margin: 10px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="my-container">
+
+    <% for(const view of dataView) { %>
+      <% if (view.type === 'table') { %>
+    
+        <% if (view.data.length > 0) { %>
+          <table class="dataTable table is-striped display nowrap is-fullwidth" style="width: 100%">
+            <thead>
+                <tr>
+                <% Object.keys(view.data[0]).forEach(header => { %>
+                <th><%= header %></th>
+                <% }); %>
+                </tr>
+            </thead>
+            <tbody>
+                <% view.data.forEach(entry => { %>
+                <tr>
+                <% Object.values(entry).forEach(value => { %>
+                  <td> <%= format(value) %></td>
+                <% }); %>
+                </tr>
+                <% }); %>
+            </tbody>
+            </table>
+        <% } else { %>
+          <p>No data found</p>
+        <% } %>
+  
+      <% } else if (view.type === 'header') { %>
+        <h2><%= view.data %></h2>
+      <% } %>
+    <% } %>
+    <footer>By @thaitype/data-viewer</footer>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bulma.min.js"></script>
+  <script src="https://cdn.socket.io/4.7.3/socket.io.min.js"></script>
+  <!-- https://github.com/apvarun/toastify-js -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+  <script>
+    // https://datatables.net/examples/api/row_details.html
+    // Formatting function for row details - modify as you need
+    function format(d) {
+      // `d` is the original data object for the row
+      let = result = '';
+      Object.keys(d).forEach(key => {
+        result += `<dd>${d[key]}</dd>`; 
+      });
+      return result;
+    }
+
+    $(document).ready(() => {
+      
+      
+      const dataTable = new DataTable('.dataTable', {
+        pageLength: 10,
+        // paging: false,
+        scrollX: true, 
+      });
+
+      dataTable.on('click', 'tbody tr', function () {
+        let row = dataTable.row(this)
+     
+        // alert('You clicked on ' + data[0] + "'s row");
+        if (row.child.isShown()) {
+          // This row is already open - close it
+            row.child.hide();
+        }
+        else {
+            // Open this row
+            row.child(format(row.data())).show();
+        }
+    });
+    
+      // Initial adjustment on page load
+      adjustDivWidth();
+
+      // Attach an event listener for the window resize event
+      $(window).resize(() => adjustDivWidth());
+
+      function adjustDivWidth() {
+        $('.dataTables_wrapper').width('97%');
+      }
+    });
+
+    function getToastConfig(type){
+      switch(type){
+        case 'success':
+          return {
+            style: {
+              background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+          }
+        case 'error':
+          return {
+            duration: 3000,
+            style: {
+              background: "linear-gradient(to right, #ff5f6d, #f76acd)",
+            }
+          }
+        case 'info':
+          return {
+            style: {
+              background: "linear-gradient(to right, #6b5d00, #ab7f50)",
+            }
+          }
+        default:
+          return {}
+      }
+    }
+
+    function showNotification(message, type = 'success') {
+      const toastConfig = getToastConfig(type);
+      Toastify({
+        gravity: 'bottom',
+        position: 'center',
+        text: message,
+        duration: 1000,
+        ...toastConfig
+  
+      }).showToast();
+      console.log(message);
+    }
+
+    const socket = io();
+    socket.on('startReload', (msg) => {
+      window.location.reload();
+    });
+    socket.on('connect', () => {
+      showNotification('Live server connected');
+    });
+    socket.on('disconnect', () => {
+      showNotification('Disconnected, attempting to reload page');
+    });
+    socket.on('connect_error', (err) => {
+      showNotification('Cannot connect to the server, reason: ' + err.message, 'error');
+    });
+
+
+  </script>
+</body>
+
+</html>
