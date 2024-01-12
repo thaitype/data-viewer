@@ -1,6 +1,6 @@
-import test from "ava";
+import {test, expect} from "vitest";
 import { sum } from "./main";
 
-test("test sum", (t) => {
-  t.is(sum(1, 2), 3);
+test("test sum", () => {
+  expect(sum(1, 2)).toBe(3);
 });
