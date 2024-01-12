@@ -68,7 +68,7 @@
                 <% view.data.forEach(entry => { %>
                 <tr>
                 <% Object.values(entry).forEach(value => { %>
-                <td> <%= format(value) %></td>
+                  <td> <%= format(value) %></td>
                 <% }); %>
                 </tr>
                 <% }); %>
@@ -95,35 +95,30 @@
   <script>
     // https://datatables.net/examples/api/row_details.html
     // Formatting function for row details - modify as you need
-function format(d) {
-  // `d` is the original data object for the row
-  return (
-      '<dl>' +
-      '<dt>Full name:</dt>' +
-      '<dd>' +
-      d.name +
-      '</dd>' +
-      '<dt>Extension number:</dt>' +
-      '<dd>' +
-      d.extn +
-      '</dd>' +
-      '<dt>Extra info:</dt>' +
-      '<dd>And any further details here (images etc)...</dd>' +
-      '</dl>'
-  );
-}
+    function format(d) {
+      // `d` is the original data object for the row
+      let = result = '';
+      Object.keys(d).forEach(key => {
+        result += `<dd>${d[key]}</dd>`; 
+      });
+      return result;
+    }
 
     $(document).ready(() => {
-      $('.dataTable').DataTable({
+      
+      
+      const dataTable = new DataTable('.dataTable', {
         pageLength: 10,
         // paging: false,
-        scrollX: true,
-      }).on('click', 'td.dt-control', function (e) {
-        let tr = e.target.closest('tr');
-        let row = table.row(tr);
+        scrollX: true, 
+      });
+
+      dataTable.on('click', 'tbody tr', function () {
+        let row = dataTable.row(this)
      
+        // alert('You clicked on ' + data[0] + "'s row");
         if (row.child.isShown()) {
-            // This row is already open - close it
+          // This row is already open - close it
             row.child.hide();
         }
         else {
@@ -131,6 +126,7 @@ function format(d) {
             row.child(format(row.data())).show();
         }
     });
+    
       // Initial adjustment on page load
       adjustDivWidth();
 
