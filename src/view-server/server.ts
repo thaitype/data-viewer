@@ -2,22 +2,12 @@ import express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 
-import { formatDate } from '../utils/date';
-export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import { delay, formatDate } from './utils';
+import { AllTableData } from './types';
 
-export interface TableComponent {
-  type: 'table';
-  data: Record<string, unknown>[];
-}
-export interface HeaderComponent {
-  type: 'header';
-  data: string;
-}
-export type AllTableData = TableComponent | HeaderComponent;
 
 export async function startViewServer(
-  // data: Record<string, unknown>[],
-  dataList: AllTableData[],
+  dataView: AllTableData[],
 ) {
   const app = express();
   const server = createServer(app);
@@ -43,11 +33,9 @@ export async function startViewServer(
     next();
   });
 
-  console.log(dataList);
-
   // Define a route to render the HTML page
   app.get('/', (req, res) => {
-    res.render('index', { dataView: dataList });
+    res.render('index', { dataView });
   });
 
   server.listen(port, async () => {

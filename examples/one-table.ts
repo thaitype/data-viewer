@@ -11,6 +11,14 @@ async function main() {
       type: 'table',
       data: result,
     },
+    {
+      type: 'header',
+      data: 'This is a header',
+    },
+    {
+      type: 'table',
+      data: result,
+    },
   ]);
 }
 

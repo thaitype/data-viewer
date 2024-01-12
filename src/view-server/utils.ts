@@ -5,3 +5,5 @@ const dateFormats = 'YYYY-MM-DD HH:mm:ss';
 export function formatDate(date: Date) {
   return dayjs(date).format(dateFormats);
 }
+
+export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
