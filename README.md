@@ -15,6 +15,10 @@ When developing Node.js applications, it's often crucial to inspect and visualiz
 - **Live Reload:** Automatically updates the displayed data when the server is restarted.
 - **Dynamic Table Support:** Works seamlessly with **`Record<string, unknown>[]`** data type and straightforward headers.
 
+## Demo
+
+![](images/demo.gif)
+
 ## Getting Started
 
 1. Create a file named **`main.ts`**:
