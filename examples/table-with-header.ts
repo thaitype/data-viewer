@@ -1,18 +1,13 @@
 import { dataViewer } from 'src/main';
 
+const getUsers = async () => (await fetch('https://jsonplaceholder.typicode.com/users')).json();
+const getPosts = async () => (await fetch('https://jsonplaceholder.typicode.com/posts')).json();
+
 async function main() {
-  const result = await (await fetch('https://jsonplaceholder.typicode.com/users')).json();
-
-
-  dataViewer.setOption({ 
-    logger: {
-      // level: 'debug',
-    },
-  });
-  dataViewer.addHeader('This is a header');
-  dataViewer.addTable(result);
-  dataViewer.addHeader('This is a header');
-  dataViewer.addTable(result);
+  dataViewer.addHeader('User Table');
+  dataViewer.addTable((await getUsers()));
+  dataViewer.addHeader('Post Table');
+  dataViewer.addTable(await getPosts());
   dataViewer.start();
 }
 

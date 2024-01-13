@@ -6,8 +6,6 @@ export function formatDate(date: Date) {
   return dayjs(date).format(dateFormats);
 }
 
-// export function format
-
 export function format(data: unknown) {
   if (data instanceof Date) {
     return formatDate(data);
