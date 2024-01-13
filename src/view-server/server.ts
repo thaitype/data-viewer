@@ -70,9 +70,9 @@ export async function startViewServer(dataView: AllTableData[], option: ServerOp
   const viewDirectory = option.viewDirectory ?? __dirname + '/views';
   logger.debug(`Config viewDirectory: ${viewDirectory}`);
   let cellFormatter = option.cellFormatter ?? format;
-  if(typeof option.cellFormatter === 'function'){
+  if (typeof option.cellFormatter === 'function') {
     logger.debug(`Config cellFormatter: Using custom cell formatter`);
-  } else if(option.cellFormatter !== undefined) {
+  } else if (option.cellFormatter !== undefined) {
     logger.warn(`Config cellFormatter: Invalid cell formatter, using default cell formatter`);
     cellFormatter = format;
   }
@@ -102,7 +102,6 @@ export async function startViewServer(dataView: AllTableData[], option: ServerOp
         logger.info('Client connected');
         logger.debug(`Client connected with: ${sessionId}`);
         addClient(sessionId);
-
       }
       isClientConnected = true;
       logger.debug('Prepare to emit startReload');
