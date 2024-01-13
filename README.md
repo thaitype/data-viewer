@@ -1,6 +1,6 @@
 # Data-viewer
 
-Display and analyze Node.js data in a web-based table viewer.
+Display Node.js data with live-reload in a web-based table viewer.
 
 [![Build](https://github.com/thaitype/data-viewer/actions/workflows/main.yml/badge.svg)](https://github.com/thaitype/data-viewer/actions/workflows/main.yml) 
 [![npm version](https://img.shields.io/npm/v/@thaitype/data-viewer-server)](https://www.npmjs.com/package/@thaitype/data-viewer-server) [![npm download](https://img.shields.io/npm/dt/@thaitype/data-viewer-server)](https://www.npmjs.com/package/@thaitype/data-viewer-server)
@@ -88,9 +88,9 @@ import { DataViewer } from '@thaitype/data-viewer-server';
 const myViewer = new DataViewer();
 ```
 
-### Acknowledgement
-- EJS Template, we use many packages to that is
-  jquery, dataTable, bulma, socket.io, toastify-js, uuid
+## **Acknowledgement**
+
+- **EJS Template:** This project utilizes various packages, including [jQuery](https://jquery.com/), [DataTables](https://datatables.net/), [Bulma](https://bulma.io/), [Socket.io](https://socket.io/), [Toastify-JS](https://github.com/apvarun/toastify-js), and [UUID](https://github.com/uuidjs/uuid).
 
 ## **License**
 
