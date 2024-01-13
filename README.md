@@ -24,7 +24,7 @@ When developing Node.js applications, it's often crucial to inspect and visualiz
 1. Create a file named **`main.ts`**:
 
   ```ts
-  import { dataViewer } from '@thaitype/data-viewer-server';
+  import dataViewer from '@thaitype/data-viewer-server';
 
   const getUsers = async () => (await fetch('https://jsonplaceholder.typicode.com/users')).json();
   const getPosts = async () => (await fetch('https://jsonplaceholder.typicode.com/posts')).json();
