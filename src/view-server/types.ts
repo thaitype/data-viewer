@@ -13,5 +13,8 @@ export type AllTableData = TableComponent | HeaderComponent;
 export interface ServerOptions {
   port?: number;
   viewDirectory?: string;
+  /**
+   * Pino Logger options
+   */
   logger?: LoggerOptions;
 }

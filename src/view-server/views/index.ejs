@@ -82,6 +82,9 @@
         <h2><%= view.data %></h2>
       <% } %>
     <% } %>
+    <% if (dataView.length === 0) { %>
+      <center>No Data in DataViewer</center>
+    <% } %>
     <footer>By <a href="https://github.com/thaitype/data-viewer" target="_blank">@thaitype/data-viewer</a></footer>
   </div>
 
