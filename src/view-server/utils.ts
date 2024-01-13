@@ -20,18 +20,7 @@ export function format(data: unknown) {
 }
 
 export function parseBuffer(data: Buffer) {
-  const supportedEncodings: BufferEncoding[] = ['utf8', 'utf-8', 'base64', 'base64url', 'binary', 'hex'];
-  for (const bufferEncoding of supportedEncodings) {
-    if (isEncoding(data, bufferEncoding)) {
-      console.log(data.toString(bufferEncoding as BufferEncoding).length);
-      return data.toString(bufferEncoding as BufferEncoding) + ' (' + bufferEncoding + ')';
-    }
-  }
-  return data;
-}
-
-export function isEncoding(data: Buffer, encoding: BufferEncoding) {
-  return data.toString(encoding) !== '' && data.toString(encoding) !== null && data.toString(encoding) !== undefined;
+  return data.toString('hex');
 }
 
 export function isBuffer(data: unknown): data is Buffer {
