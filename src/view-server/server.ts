@@ -69,6 +69,13 @@ export async function startViewServer(dataView: AllTableData[], option: ServerOp
   logger.debug(`Config port: ${port}`);
   const viewDirectory = option.viewDirectory ?? __dirname + '/views';
   logger.debug(`Config viewDirectory: ${viewDirectory}`);
+  let cellFormatter = option.cellFormatter ?? format;
+  if(typeof option.cellFormatter === 'function'){
+    logger.debug(`Config cellFormatter: Using custom cell formatter`);
+  } else {
+    logger.warn(`Config cellFormatter: Invalid cell formatter, using default cell formatter`);
+    cellFormatter = format;
+  }
 
   let isClientConnected = false;
 
@@ -106,7 +113,7 @@ export async function startViewServer(dataView: AllTableData[], option: ServerOp
 
   // Middleware to add the formatDate function to locals
   app.use((req, res, next) => {
-    res.locals.format = format;
+    res.locals.format = cellFormatter;
     next();
   });
 

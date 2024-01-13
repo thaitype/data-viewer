@@ -17,4 +17,8 @@ export interface ServerOptions {
    * Pino Logger options
    */
   logger?: LoggerOptions;
+  /**
+   * Override the default cell formatter
+   */
+  cellFormatter?: (data: unknown) => string;
 }
