@@ -7,3 +7,8 @@ export interface HeaderComponent {
   data: string;
 }
 export type AllTableData = TableComponent | HeaderComponent;
+
+export interface ServerOptions {
+  port?: number;
+  viewDirectory?: string;
+}
