@@ -46,6 +46,11 @@
       margin: 10px;
       border-radius: 12px;
     }
+
+    .show-detail {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 
@@ -99,11 +104,13 @@
   <script>
     // https://datatables.net/examples/api/row_details.html
     // Formatting function for row details - modify as you need
+
+    // type Record<string, string>
     function format(d) {
       // `d` is the original data object for the row
       let = result = '';
-      Object.keys(d).forEach(key => {
-        result += `<dd>${d[key]}</dd>`; 
+      Object.entries(d).forEach(([key, value]) => {
+        result += `<dd class="show-detail">${key}: ${value}</dd>`; 
       });
       return result;
     }
@@ -117,10 +124,13 @@
         scrollX: true, 
       });
 
-      dataTable.on('click', 'tbody tr', function () {
+      dataTable.on('click', 'tbody td', function () {
         let row = dataTable.row(this)
-     
-        // alert('You clicked on ' + data[0] + "'s row");
+        var columnIndex = dataTable.cell( this ).index().column;
+        var title = dataTable.column( columnIndex ).header();
+        // console.log('Clicked on column', $(title).html());
+
+        // console.log('Clicked on row ' + row.data() + "'s row");
         if (row.child.isShown()) {
           // This row is already open - close it
             row.child.hide();

@@ -72,7 +72,7 @@ export async function startViewServer(dataView: AllTableData[], option: ServerOp
   let cellFormatter = option.cellFormatter ?? format;
   if(typeof option.cellFormatter === 'function'){
     logger.debug(`Config cellFormatter: Using custom cell formatter`);
-  } else {
+  } else if(option.cellFormatter !== undefined) {
     logger.warn(`Config cellFormatter: Invalid cell formatter, using default cell formatter`);
     cellFormatter = format;
   }
@@ -86,6 +86,7 @@ export async function startViewServer(dataView: AllTableData[], option: ServerOp
   const connectedClient = new Set<string>();
   const isClientConnectedBefore = (sessionId: string) => connectedClient.has(sessionId);
   const addClient = (sessionId: string) => connectedClient.add(sessionId);
+  const removeClient = (sessionId: string) => connectedClient.delete(sessionId);
 
   io.on('connection', async socket => {
     /**
@@ -94,14 +95,17 @@ export async function startViewServer(dataView: AllTableData[], option: ServerOp
     socket.on('join', sessionId => {
       if (isClientConnectedBefore(sessionId)) {
         logger.debug(`Same client connected with: ${sessionId}`);
+        removeClient(sessionId);
+        logger.debug(`Remove client with: ${sessionId}`);
         return;
       } else {
         logger.info('Client connected');
         logger.debug(`Client connected with: ${sessionId}`);
         addClient(sessionId);
-        isClientConnected = true;
-        logger.debug('Prepare to emit startReload');
+
       }
+      isClientConnected = true;
+      logger.debug('Prepare to emit startReload');
     });
   });
 
