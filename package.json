@@ -1,6 +1,6 @@
 {
   "name": "@thaitype/data-viewer-server",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Display Node.js data with live-reload in a web-based table viewer.",
   "main": "./dist/main.js",
   "module": "./dist/main.mjs",
