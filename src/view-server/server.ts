@@ -1,7 +1,7 @@
 import type { Logger } from 'pino';
 
 import express from 'express';
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 
 import type { AllTableData, HeaderComponent, ServerOptions, TableComponent } from './types';
@@ -80,12 +80,11 @@ export async function startViewServer(dataView: AllTableData[], option: ServerOp
   const isClientConnectedBefore = (sessionId: string) => connectedClient.has(sessionId);
   const addClient = (sessionId: string) => connectedClient.add(sessionId);
 
-  io.on('connection', async (socket) => {
-
+  io.on('connection', async socket => {
     /**
      * Prevent duplicate 'join' event
      */
-    socket.on('join', (sessionId) => {
+    socket.on('join', sessionId => {
       if (isClientConnectedBefore(sessionId)) {
         logger.debug(`Same client connected with: ${sessionId}`);
         return;
@@ -97,7 +96,6 @@ export async function startViewServer(dataView: AllTableData[], option: ServerOp
         logger.debug('Prepare to emit startReload');
       }
     });
-    
   });
 
   // Set the custom path for EJS views
