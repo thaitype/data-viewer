@@ -2,6 +2,10 @@
 
 Display and analyze Node.js data in a web-based table viewer.
 
+[![Build](https://github.com/thaitype/data-viewer/actions/workflows/main.yml/badge.svg)](https://github.com/thaitype/data-viewer/actions/workflows/main.yml) 
+[![npm version](https://img.shields.io/npm/v/@thaitype/data-viewer-server)](https://www.npmjs.com/package/@thaitype/data-viewer-server) [![npm download](https://img.shields.io/npm/dt/@thaitype/data-viewer-server)](https://www.npmjs.com/package/@thaitype/data-viewer-server)
+
+
 ## Motivation 
 
 When developing Node.js applications, it's often crucial to inspect and visualize data in a tabular format. While tools like [console-table-printer](https://github.com/ayonious/console-table-printer) or `console.table` are helpful, they may fall short when dealing with large datasets or multiple columns. This project aims to simplify the process of viewing tabular data by providing an easy-to-use and efficient web-based solution.
@@ -83,6 +87,10 @@ import { DataViewer } from '@thaitype/data-viewer-server';
 
 const myViewer = new DataViewer();
 ```
+
+### Acknowledgement
+- EJS Template, we use many packages to that is
+  jquery, dataTable, bulma, socket.io, toastify-js, uuid
 
 ## **License**
 
