@@ -91,6 +91,7 @@
   <script src="https://cdn.socket.io/4.7.3/socket.io.min.js"></script>
   <!-- https://github.com/apvarun/toastify-js -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
 
   <script>
     // https://datatables.net/examples/api/row_details.html
@@ -164,6 +165,22 @@
       }
     }
 
+    function getSessionId() {
+      // Check if a session ID is already in the local storage
+      let sessionId = localStorage.getItem('sessionId');
+
+      if (!sessionId) {
+        // If no session ID, generate a new one
+        sessionId = uuidv4();
+        // Store the new session ID in the local storage
+        localStorage.setItem('sessionId', sessionId);
+      }
+
+      console.log('Session ID: ' + sessionId);
+
+      return sessionId;
+    }
+
     function showNotification(message, type = 'success') {
       const toastConfig = getToastConfig(type);
       Toastify({
@@ -183,6 +200,7 @@
     });
     socket.on('connect', () => {
       showNotification('Live server connected');
+      socket.emit('join', getSessionId());
     });
     socket.on('disconnect', () => {
       showNotification('Disconnected, attempting to reload page');
