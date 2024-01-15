@@ -49,6 +49,25 @@ When developing Node.js applications, it's often crucial to inspect and visualiz
 
 ## **Manual**
 
+### **Custom Cell Formatter Function**
+
+You can define a custom cell formatting function to tailor the appearance of individual cells. This function takes a cell value as input and returns the formatted string to be displayed in the table.
+
+Example:
+
+```ts
+dataViewer.setOption({
+  cellFormatter: cell => {
+    if (typeof cell === 'object') {
+      return JSON.stringify(cell);
+    }
+    return String(cell);
+  },
+});
+```
+
+In this example, the cell formatter checks if the cell value is an object, and if so, it converts it to a JSON string. Otherwise, it converts the cell value to a string.
+
 ### **Setup Log Level**
 
 The package uses the [pino](https://github.com/pinojs/pino) package internally. Example: set up **`debug`** log level.
