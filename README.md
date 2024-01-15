@@ -47,6 +47,11 @@ When developing Node.js applications, it's often crucial to inspect and visualiz
   ```
 3. The view is automatically updated when the server restarts.
 
+## Idea Behind the Scene 
+
+- Utilizes [Express.js](https://expressjs.com/) to run [EJS Templates](https://ejs.co/) by taking data from the server-side (Node.js) and rendering it using [DataTables](https://datatables.net/) jQuery to create the table.
+- Implements [Socket.io](https://socket.io/) for handling real-time events.
+
 ## **Manual**
 
 ### **Custom Cell Formatter Function**
