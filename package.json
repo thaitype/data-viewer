@@ -1,6 +1,6 @@
 {
   "name": "@thaitype/data-viewer-server",
-  "version": "0.2.2",
+  "version": "0.3.0-canary.0",
   "description": "Display Node.js data with live-reload in a web-based table viewer.",
   "main": "./dist/main.js",
   "module": "./dist/main.mjs",
@@ -10,6 +10,11 @@
       "types": "./dist/main.d.ts",
       "import": "./dist/main.mjs",
       "default": "./dist/main.js"
+    },
+    "./globals": {
+      "types": "./dist/globals/globals.d.ts",
+      "import": "./dist/globals/globals.mjs",
+      "default": "./dist/globals/globals.js"
     }
   },
   "files": [
@@ -19,6 +24,8 @@
   "scripts": {
     "all": "run-s lint build",
     "build": "tsup src/main.ts --dts --format esm,cjs",
+    "build:global2": "tsc --project tsconfig.global.json",
+    "build:global": "tsup src/globals.ts --dts --out-dir ./dist/globals --format esm,cjs",
     "release": "npm run build && changeset publish",
     "format": "prettier -w src",
     "lint": "tsc --noEmit && eslint ./src && prettier -c src",
@@ -27,7 +34,7 @@
     "test": "vitest",
     "copy-view": "tsx scripts/copy-view",
     "clean": "rimraf dist",
-    "prepublishOnly": "run-s clean all copy-view",
+    "prepublishOnly": "run-s clean all build:global copy-view",
     "test:ci": "vitest run"
   },
   "devDependencies": {
