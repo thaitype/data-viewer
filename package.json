@@ -2,6 +2,7 @@
   "name": "@thaitype/data-viewer-server",
   "version": "0.3.0-canary.3",
   "description": "Display Node.js data with live-reload in a web-based table viewer.",
+  "type": "module",
   "main": "./dist/main.js",
   "module": "./dist/main.mjs",
   "types": "./dist/main.d.ts",
@@ -23,10 +24,10 @@
     "src/**"
   ],
   "scripts": {
-    "all": "run-s lint build",
+    "all": "run-s clean lint build:global",
     "build": "tsup src/main.ts --dts --format esm,cjs",
     "build:global2": "tsc --project tsconfig.global.json",
-    "build:global": "tsup src/globals.ts --format esm",
+    "build:global": "tsc --project tsconfig.global.json",
     "release": "npm run build && changeset publish",
     "format": "prettier -w src",
     "lint": "tsc --noEmit && eslint ./src && prettier -c src",
