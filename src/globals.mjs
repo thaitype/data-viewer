@@ -5,5 +5,3 @@
 import * as _ from './main.js';
 // eslint-disable-next-line no-undef
 Object.assign(global, _);
-
-
