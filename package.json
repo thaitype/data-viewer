@@ -1,17 +1,22 @@
 {
   "name": "@thaitype/data-viewer-server",
-  "version": "0.3.0-canary.1",
+  "version": "0.3.0-canary.2",
   "description": "Display Node.js data with live-reload in a web-based table viewer.",
   "main": "./dist/main.js",
   "module": "./dist/main.mjs",
   "types": "./dist/main.d.ts",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "types": "./dist/main.d.ts",
       "import": "./dist/main.mjs",
       "default": "./dist/main.js"
     },
-    "./globals": "./dist/globals.mjs"
+    "./globals": {
+      "types": "./dist/globals.d.ts",
+      "import": "./dist/globals.mjs",
+      "default": "./dist/globals.js"
+    }
   },
   "files": [
     "dist/**",
