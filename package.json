@@ -1,6 +1,6 @@
 {
   "name": "@thaitype/data-viewer-server",
-  "version": "0.3.0-canary.0",
+  "version": "0.3.0-canary.1",
   "description": "Display Node.js data with live-reload in a web-based table viewer.",
   "main": "./dist/main.js",
   "module": "./dist/main.mjs",
@@ -11,11 +11,7 @@
       "import": "./dist/main.mjs",
       "default": "./dist/main.js"
     },
-    "./globals": {
-      "types": "./dist/globals/globals.d.ts",
-      "import": "./dist/globals/globals.mjs",
-      "default": "./dist/globals/globals.js"
-    }
+    "./globals": "./dist/globals.mjs"
   },
   "files": [
     "dist/**",
@@ -25,16 +21,17 @@
     "all": "run-s lint build",
     "build": "tsup src/main.ts --dts --format esm,cjs",
     "build:global2": "tsc --project tsconfig.global.json",
-    "build:global": "tsup src/globals.ts --dts --out-dir ./dist/globals --format esm,cjs",
+    "build:global": "tsup src/globals.ts --format esm",
     "release": "npm run build && changeset publish",
     "format": "prettier -w src",
     "lint": "tsc --noEmit && eslint ./src && prettier -c src",
     "lint:fix": "eslint --fix ./src && prettier -w src",
     "tsx": "tsx",
     "test": "vitest",
+    "copy-global": "tsx scripts/copy-global",
     "copy-view": "tsx scripts/copy-view",
     "clean": "rimraf dist",
-    "prepublishOnly": "run-s clean all build:global copy-view",
+    "prepublishOnly": "run-s clean all copy-global copy-view",
     "test:ci": "vitest run"
   },
   "devDependencies": {
