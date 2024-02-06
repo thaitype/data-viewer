@@ -1,15 +1,15 @@
 import dayjs from 'dayjs';
-// import { dirname } from 'node:path';
-// import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /**
  * Get the dirname of the current module (For ESM)
  * Ref: https://stackoverflow.com/a/64383997
  * https://byteofdev.com/posts/how-to-use-esm/#migrating-from-cjs-to-esm
  */
-// export function getEsmDirname() {
-//   return dirname(fileURLToPath(import.meta.url));
-// }
+export function getDirname() {
+  return dirname(fileURLToPath(import.meta.url));
+}
 
 const dateFormats = 'YYYY-MM-DD HH:mm:ss Z';
 

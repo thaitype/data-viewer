@@ -4,9 +4,9 @@ import path from 'node:path';
 
 import type { DataViewerOptions, StartOptions } from './types';
 
-import { format } from './utils';
 import { consoleLogger } from '../logger';
 import { startViewServer } from './server';
+import { format, getDirname } from './utils';
 import { DataContainer } from './data-container';
 
 export class DataViewer extends DataContainer {
@@ -30,7 +30,7 @@ export class DataViewer extends DataContainer {
   public registerMiddleware(app: express.Express) {
     const logger = this.option.logger ?? consoleLogger;
     const viewPath = this.option.path ?? '/';
-    const viewDirectory = this.option.viewDirectory ?? path.join(__dirname, 'views');
+    const viewDirectory = this.option.viewDirectory ?? path.join(getDirname(), 'views');
     logger.debug(`Config viewDirectory: ${viewDirectory}`);
     let cellFormatter = this.option.cellFormatter ?? format;
     if (typeof this.option.cellFormatter === 'function') {
