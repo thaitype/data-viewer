@@ -11,6 +11,11 @@ export interface HeaderComponent {
 export type AllTableData = TableComponent | HeaderComponent;
 
 export interface ServerOptions {
+  /**
+   * The path to serve the view
+   * @default '/'
+   */
+  path?: string;
   port?: number;
   viewDirectory?: string;
   /**
