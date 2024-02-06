@@ -2,7 +2,7 @@ import type { LoggerOptions } from 'pino';
 
 export interface TableComponent {
   type: 'table';
-  data: Record<string, unknown>[];
+  data: (Record<string, unknown> | object)[];
 }
 export interface HeaderComponent {
   type: 'header';
