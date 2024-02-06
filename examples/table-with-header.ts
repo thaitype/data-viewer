@@ -4,7 +4,9 @@ const getUsers = async () => (await fetch('https://jsonplaceholder.typicode.com/
 const getPosts = async () => (await fetch('https://jsonplaceholder.typicode.com/posts')).json();
 
 async function main() {
-  dataViewer
+  dataViewer.setOption({
+    enableLiveReload: false,
+  })
     // .setOption({
     //   logger: {
     //     level: 'debug',

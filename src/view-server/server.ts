@@ -9,11 +9,13 @@ import type { DataViewer } from './data-viewer';
 import { delay } from './utils';
 
 export async function startViewServer(dataViewer: DataViewer, logger: Logger) {
-  dataViewer.setOption({
-    ...dataViewer.getOption(),
-    enableLiveReload: true,
-  })
   const viewerOption = dataViewer.getOption();
+  const enableLiveReload = viewerOption.enableLiveReload ?? true;
+  dataViewer.setOption({
+    ...viewerOption,
+    enableLiveReload,
+  });
+  logger.debug(`Enable live reload: ${enableLiveReload}`);
   logger.debug('Starting view server');
   const app = express();
   logger.debug('Express app created');
