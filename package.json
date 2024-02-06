@@ -1,6 +1,6 @@
 {
   "name": "@thaitype/data-viewer-server",
-  "version": "0.2.2",
+  "version": "0.3.0-canary.4",
   "description": "Display Node.js data with live-reload in a web-based table viewer.",
   "main": "./dist/main.js",
   "module": "./dist/main.mjs",
