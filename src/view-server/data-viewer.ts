@@ -17,9 +17,9 @@ export class DataViewer {
 
   public setupLogger(option: ServerOptions) {
     return getLogger(
-      option.logger ?? {
+      option.loggerOption ?? {
         level: 'info',
-        ...(option.logger ?? {}),
+        ...(option.loggerOption ?? {}),
       }
     );
   }

@@ -34,7 +34,7 @@ export interface ServerOptions {
   /**
    * Pino Logger options
    */
-  logger?: LoggerOptions;
+  loggerOption?: LoggerOptions;
   /**
    * Override the default cell formatter
    */
