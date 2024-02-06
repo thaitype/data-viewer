@@ -1,15 +1,16 @@
 import type express from 'express';
 
-import type { AllTableData, HeaderComponent, DataViewerOptions, TableComponent, StartOptions } from './types';
+import type { DataViewerOptions, StartOptions } from './types';
 
 import { format } from './utils';
 import { consoleLogger } from '../logger';
 import { startViewServer } from './server';
+import { DataContainer } from './data-container';
 
-export class DataViewer {
-  private dataView: AllTableData[] = [];
-
-  constructor(protected option: DataViewerOptions = {}) {}
+export class DataViewer extends DataContainer {
+  constructor(protected option: DataViewerOptions = {}) {
+    super();
+  }
 
   public getOption() {
     return this.option;
@@ -17,26 +18,6 @@ export class DataViewer {
 
   public setOption(option: DataViewerOptions) {
     this.option = option;
-    return this;
-  }
-
-  public addData(data: AllTableData) {
-    this.dataView.push(data);
-    return this;
-  }
-
-  public addTable(data: TableComponent['data']) {
-    this.dataView.push({ type: 'table', data });
-    return this;
-  }
-
-  public addHeader(data: HeaderComponent['data']) {
-    this.dataView.push({ type: 'header', data });
-    return this;
-  }
-
-  public clear() {
-    this.dataView = [];
     return this;
   }
 
