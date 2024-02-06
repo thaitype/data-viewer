@@ -1,19 +1,28 @@
-import type { Logger } from 'pino';
-
 import express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 
+import type { StartOptions } from './types';
 import type { DataViewer } from './data-viewer';
 
 import { delay } from './utils';
+import { getPinoLogger } from '../logger';
 
-export async function startViewServer(dataViewer: DataViewer, logger: Logger) {
+export async function startViewServer(dataViewer: DataViewer, startOptions?: StartOptions) {
+  const logger = getPinoLogger(startOptions?.loggerOption ?? {});
+  const stringLogger = {
+    log: (message: string) => logger.info(message),
+    debug: (message: string) => logger.debug(message),
+    info: (message: string) => logger.info(message),
+    warn: (message: string) => logger.warn(message),
+    error: (message: string) => logger.error(message),
+  };
   const viewerOption = dataViewer.getOption();
   const enableLiveReload = viewerOption.enableLiveReload ?? true;
   dataViewer.setOption({
     ...viewerOption,
     enableLiveReload,
+    logger: stringLogger,
   });
   logger.debug(`Enable live reload: ${enableLiveReload}`);
   logger.debug('Starting view server');
@@ -23,7 +32,7 @@ export async function startViewServer(dataViewer: DataViewer, logger: Logger) {
   logger.debug('HTTP server created');
   const io = new Server(server);
   logger.debug('Socket.IO server created');
-  const port = viewerOption.port ?? 3030;
+  const port = startOptions?.port ?? 3030;
   logger.debug(`Config port: ${port}`);
 
   let isClientConnected = false;

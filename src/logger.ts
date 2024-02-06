@@ -2,7 +2,14 @@ import type { LoggerOptions } from 'pino';
 
 import pino from 'pino';
 
-export const getLogger = (option: LoggerOptions) =>
+export interface Logger {
+  debug: (message: string) => void;
+  info: (message: string) => void;
+  error: (message: string) => void;
+  warn: (message: string) => void;
+}
+
+export const getPinoLogger = (option?: LoggerOptions) =>
   pino({
     ...option,
     transport: {
@@ -11,5 +18,12 @@ export const getLogger = (option: LoggerOptions) =>
         colorize: true,
       },
     },
-    ...(option.transport ?? {}),
+    ...(option?.transport ?? {}),
   });
+
+export const consoleLogger: Logger = {
+  debug: console.debug,
+  info: console.info,
+  error: console.error,
+  warn: console.warn,
+};

@@ -1,36 +1,22 @@
-import type { Logger } from 'pino';
 import type express from 'express';
 
-import type { AllTableData, HeaderComponent, ServerOptions, TableComponent } from './types';
+import type { AllTableData, HeaderComponent, DataViewerOptions, TableComponent, StartOptions } from './types';
 
 import { format } from './utils';
-import { getLogger } from '../logger';
+import { consoleLogger } from '../logger';
 import { startViewServer } from './server';
 
 export class DataViewer {
   private dataView: AllTableData[] = [];
-  private logger: Logger;
 
-  constructor(protected option: ServerOptions = {}) {
-    this.logger = this.setupLogger(option);
-  }
-
-  public setupLogger(option: ServerOptions) {
-    return getLogger(
-      option.loggerOption ?? {
-        level: 'info',
-        ...(option.loggerOption ?? {}),
-      }
-    );
-  }
+  constructor(protected option: DataViewerOptions = {}) {}
 
   public getOption() {
     return this.option;
   }
 
-  public setOption(option: ServerOptions) {
+  public setOption(option: DataViewerOptions) {
     this.option = option;
-    this.logger = this.setupLogger(option);
     return this;
   }
 
@@ -54,19 +40,20 @@ export class DataViewer {
     return this;
   }
 
-  public start() {
-    startViewServer(this, this.logger);
+  public start(startOptions?: StartOptions) {
+    startViewServer(this, startOptions);
   }
 
   public registerMiddleware(app: express.Express) {
+    const logger = this.option.logger ?? consoleLogger;
     const viewPath = this.option.path ?? '/';
     const viewDirectory = this.option.viewDirectory ?? __dirname + '/views';
-    console.debug(`Config viewDirectory: ${viewDirectory}`);
+    logger.debug(`Config viewDirectory: ${viewDirectory}`);
     let cellFormatter = this.option.cellFormatter ?? format;
     if (typeof this.option.cellFormatter === 'function') {
-      console.debug(`Config cellFormatter: Using custom cell formatter`);
+      logger.debug(`Config cellFormatter: Using custom cell formatter`);
     } else if (this.option.cellFormatter !== undefined) {
-      console.warn(`Config cellFormatter: Invalid cell formatter, using default cell formatter`);
+      logger.warn(`Config cellFormatter: Invalid cell formatter, using default cell formatter`);
       cellFormatter = format;
     }
     const enableLiveReload = this.option.enableLiveReload ?? false;
@@ -82,7 +69,6 @@ export class DataViewer {
       res.locals.format = cellFormatter;
       next();
     });
-    
 
     // Define a route to render the HTML page
     app.get(viewPath, (req, res) => {

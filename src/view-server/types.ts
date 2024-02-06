@@ -1,5 +1,7 @@
 import type { LoggerOptions } from 'pino';
 
+import type { Logger } from '../logger';
+
 export interface TableComponent {
   type: 'table';
   data: (Record<string, unknown> | object)[];
@@ -10,17 +12,12 @@ export interface HeaderComponent {
 }
 export type AllTableData = TableComponent | HeaderComponent;
 
-export interface ServerOptions {
+export interface DataViewerOptions {
   /**
    * The path to serve the view
    * @default '/'
    */
   path?: string;
-  /**
-   * The port to serve the view
-   * @default 3030
-   */
-  port?: number;
   /**
    * The directory to serve the view
    * @default ' __dirname + '/views''
@@ -32,11 +29,25 @@ export interface ServerOptions {
    */
   enableLiveReload?: boolean;
   /**
-   * Pino Logger options
+   * Custom Logger
+   *
+   * @default console
    */
-  loggerOption?: LoggerOptions;
+  logger?: Logger;
   /**
    * Override the default cell formatter
    */
   cellFormatter?: (data: unknown) => string;
+}
+
+export interface StartOptions {
+  /**
+   * Pino Logger options
+   */
+  loggerOption?: LoggerOptions;
+  /**
+   * The port to serve the view
+   * @default 3030
+   */
+  port?: number;
 }
