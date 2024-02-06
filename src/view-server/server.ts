@@ -9,6 +9,10 @@ import type { DataViewer } from './data-viewer';
 import { delay } from './utils';
 
 export async function startViewServer(dataViewer: DataViewer, logger: Logger) {
+  dataViewer.setOption({
+    ...dataViewer.getOption(),
+    enableLiveReload: true,
+  })
   const viewerOption = dataViewer.getOption();
   logger.debug('Starting view server');
   const app = express();
@@ -19,15 +23,6 @@ export async function startViewServer(dataViewer: DataViewer, logger: Logger) {
   logger.debug('Socket.IO server created');
   const port = viewerOption.port ?? 3030;
   logger.debug(`Config port: ${port}`);
-  // const viewDirectory = viewerOption.viewDirectory ?? __dirname + '/views';
-  // logger.debug(`Config viewDirectory: ${viewDirectory}`);
-  // let cellFormatter = option.cellFormatter ?? format;
-  // if (typeof option.cellFormatter === 'function') {
-  //   logger.debug(`Config cellFormatter: Using custom cell formatter`);
-  // } else if (option.cellFormatter !== undefined) {
-  //   logger.warn(`Config cellFormatter: Invalid cell formatter, using default cell formatter`);
-  //   cellFormatter = format;
-  // }
 
   let isClientConnected = false;
 
@@ -61,23 +56,6 @@ export async function startViewServer(dataViewer: DataViewer, logger: Logger) {
   });
 
   dataViewer.registerMiddleware(app);
-
-  // // Set the custom path for EJS views
-  // app.set('views', viewDirectory);
-
-  // // Set the view engine to EJS
-  // app.set('view engine', 'ejs');
-
-  // // Middleware to add the formatDate function to locals
-  // app.use((req, res, next) => {
-  //   res.locals.format = cellFormatter;
-  //   next();
-  // });
-
-  // // Define a route to render the HTML page
-  // app.get('/', (req, res) => {
-  //   res.render('index', { dataView });
-  // });
 
   server.listen(port, async () => {
     logger.info(`Server is running at http://localhost:${port}`);

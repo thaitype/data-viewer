@@ -16,8 +16,21 @@ export interface ServerOptions {
    * @default '/'
    */
   path?: string;
+  /**
+   * The port to serve the view
+   * @default 3030
+   */
   port?: number;
+  /**
+   * The directory to serve the view
+   * @default ' __dirname + '/views''
+   */
   viewDirectory?: string;
+  /**
+   * Enable live reload
+   * @default false
+   */
+  enableLiveReload?: boolean;
   /**
    * Pino Logger options
    */

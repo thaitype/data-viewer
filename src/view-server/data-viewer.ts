@@ -69,6 +69,7 @@ export class DataViewer {
       console.warn(`Config cellFormatter: Invalid cell formatter, using default cell formatter`);
       cellFormatter = format;
     }
+    const enableLiveReload = this.option.enableLiveReload ?? false;
 
     // Set the custom path for EJS views
     app.set('views', viewDirectory);
@@ -81,10 +82,11 @@ export class DataViewer {
       res.locals.format = cellFormatter;
       next();
     });
+    
 
     // Define a route to render the HTML page
     app.get(viewPath, (req, res) => {
-      res.render('index', { dataView: this.dataView });
+      res.render('index', { dataView: this.dataView, enableLiveReload });
     });
   }
 }
