@@ -1,6 +1,6 @@
 {
   "name": "@thaitype/data-viewer-server",
-  "version": "0.3.0-canary.6",
+  "version": "0.3.0-canary.7",
   "description": "Display Node.js data with live-reload in a web-based table viewer.",
   "main": "./dist/main.js",
   "module": "./dist/main.mjs",
@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "all": "run-s lint build",
-    "build": "tsup src/main.ts --dts --format esm,cjs",
+    "build": "tsup src/main.ts --dts --format esm,cjs --target es2020",
     "release": "npm run build && changeset publish",
     "format": "prettier -w src",
     "lint": "tsc --noEmit && eslint ./src && prettier -c src",
