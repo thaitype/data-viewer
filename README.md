@@ -116,7 +116,7 @@ const dataViewer = new DataViewer({
 - Utilizes [Express.js](https://expressjs.com/) to run [EJS Templates](https://ejs.co/) by taking data from the server-side (Node.js) and rendering it using [DataTables](https://datatables.net/) jQuery to create the table.
 - Implements [Socket.io](https://socket.io/) for handling real-time events.
 
-## **API References**
+## **Manual**
 
 ### Disable Live Reload
 
