@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@thaitype/data-viewer-server':
-    specifier: 0.3.0-canary.8
-    version: 0.3.0-canary.8
+    specifier: 1.0.0
+    version: 1.0.0
 
 devDependencies:
   '@types/supertest':
@@ -545,8 +545,8 @@ packages:
     resolution: {integrity: sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==}
     dev: false
 
-  /@thaitype/data-viewer-server@0.3.0-canary.8:
-    resolution: {integrity: sha512-LDL1TYkhIXIuSsm+JxriAGl3cFFQxdgDqiFtrlUPBaLy4rDqcTCmYM40/pzmU9g6sPEZQn48+ufpc1wNJOnqcg==}
+  /@thaitype/data-viewer-server@1.0.0:
+    resolution: {integrity: sha512-gCuEU7I678lK5OmKHgaY9rRrV4T5Ar2AVK7QZh7WBmMFDP/kCJi5/wfi/Um2L3Jdckvj7oAvITbgAsMDcMFMuQ==}
     dependencies:
       dayjs: 1.11.10
       ejs: 3.1.9
