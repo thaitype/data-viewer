@@ -8,7 +8,7 @@ import type { DataViewer } from './data-viewer';
 import { delay } from './utils';
 import { getPinoLogger } from '../logger';
 
-export async function startViewServer(dataViewer: DataViewer, startOptions?: StartOptions) {
+export function startViewServer(dataViewer: DataViewer, startOptions?: StartOptions) {
   const logger = getPinoLogger(startOptions?.loggerOption ?? {});
   const stringLogger = {
     log: (message: string) => logger.info(message),
@@ -76,4 +76,6 @@ export async function startViewServer(dataViewer: DataViewer, startOptions?: Sta
     io.emit('startReload');
     logger.debug('Start reload');
   });
+
+  return server;
 }

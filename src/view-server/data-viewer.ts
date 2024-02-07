@@ -24,7 +24,7 @@ export class DataViewer extends DataContainer {
   }
 
   public start(startOptions?: StartOptions) {
-    startViewServer(this, startOptions);
+    return startViewServer(this, startOptions);
   }
 
   public registerMiddleware(app: express.Express) {
