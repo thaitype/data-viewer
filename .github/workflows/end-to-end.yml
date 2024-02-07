@@ -1,0 +1,35 @@
+name: Test E2E
+on:
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project-path:
+          - 'end-to-end/test-cjs'
+          - 'end-to-end/test-esm'
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'pnpm'
+          cache-dependency-path: ${{ matrix.project-path }}/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: ${{ matrix.project-path }}
+
+      - run: pnpm run test
+        working-directory: ${{ matrix.project-path }}

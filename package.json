@@ -17,18 +17,18 @@
     "src/**"
   ],
   "scripts": {
-    "all": "run-s lint build",
+    "all": "run-s lint test build",
     "build": "tsup src/main.ts --dts --format esm,cjs --target es2020",
     "release": "npm run build && changeset publish",
     "format": "prettier -w src",
     "lint": "tsc --noEmit && eslint ./src && prettier -c src",
     "lint:fix": "eslint --fix ./src && prettier -w src",
     "tsx": "tsx",
-    "test": "vitest",
+    "test:watch": "vitest",
     "copy-view": "tsx scripts/copy-view",
     "clean": "rimraf dist",
     "prepublishOnly": "run-s clean all copy-view",
-    "test:ci": "vitest run"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
