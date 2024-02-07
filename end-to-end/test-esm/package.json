@@ -1,0 +1,45 @@
+{
+  "name": "@thaitype/minimal-typescript-node-esm-starter",
+  "version": "1.0.0",
+  "description": "minimal-typescript-node-esm-starter",
+  "type": "module",
+  "main": "./dist/main.cjs",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.js",
+      "default": "./dist/main.cjs"
+    }
+  },
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "dev": "tsx watch src/main.ts",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "test": "vitest run",
+    "build": "tsup src/main.ts --dts --format esm,cjs",
+    "format": "prettier -w src",
+    "lint": "tsc --noEmit && eslint ./src && prettier -c src",
+    "lint:fix": "eslint --fix ./src && prettier -w src"
+  },
+  "keywords": [],
+  "author": "Thada Wangthammang",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@vitest/coverage-v8": "^1.1.3",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "supertest": "^6.3.4",
+    "tsup": "^8.0.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.3"
+  },
+  "dependencies": {
+    "@thaitype/data-viewer-server": "0.3.0-canary.8"
+  }
+}

@@ -207,21 +207,24 @@
       console.log(message);
     }
 
-    const socket = io();
-    socket.on('startReload', (msg) => {
-      window.location.reload();
-    });
-    socket.on('connect', () => {
-      showNotification('Live server connected');
-      socket.emit('join', getSessionId());
-    });
-    socket.on('disconnect', () => {
-      showNotification('Disconnected, attempting to reload page');
-    });
-    socket.on('connect_error', (err) => {
-      showNotification('Cannot connect to the server, reason: ' + err.message, 'error');
-    });
-
+    // This is the code that will be executed when the page is loaded
+    const enableLiveReload = <%- enableLiveReload %>;
+    if(enableLiveReload === true){
+      const socket = io();
+      socket.on('startReload', (msg) => {
+        window.location.reload();
+      });
+      socket.on('connect', () => {
+        showNotification('Live server connected');
+        socket.emit('join', getSessionId());
+      });
+      socket.on('disconnect', () => {
+        showNotification('Disconnected, attempting to reload page');
+      });
+      socket.on('connect_error', (err) => {
+        showNotification('Cannot connect to the server, reason: ' + err.message, 'error');
+      });
+    }
 
   </script>
 </body>
