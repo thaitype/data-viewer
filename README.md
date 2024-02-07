@@ -14,6 +14,8 @@ When developing Node.js applications, it's often crucial to inspect and visualiz
 
 - **Live Reload:** Automatically updates the displayed data when the server is restarted.
 - **Dynamic Table Support:** Works seamlessly with **`Record<string, unknown>[]`** data type and straightforward headers.
+- **Support Custom Server:** Integrate with your existing server.
+- **Custom Logger:** Integrate with your existing log.
 
 ## Demo
 
