@@ -19,6 +19,12 @@ When developing Node.js applications, it's often crucial to inspect and visualiz
 
 ![](images/demo.gif)
 
+## Installation
+
+```bash
+npm install @thaitype/data-viewer-server
+```
+
 ## Getting Started
 
 1. Create a file named **`main.ts`**:
@@ -31,7 +37,7 @@ When developing Node.js applications, it's often crucial to inspect and visualiz
 
   async function main() {
     dataViewer.addHeader('User Table');
-    dataViewer.addTable((await getUsers()));
+    dataViewer.addTable(await getUsers());
     dataViewer.addHeader('Post Table');
     dataViewer.addTable(await getPosts());
     dataViewer.start();
@@ -47,12 +53,83 @@ When developing Node.js applications, it's often crucial to inspect and visualiz
   ```
 3. The view is automatically updated when the server restarts.
 
+## **Create Data Container**
+
+Sometimes, you may want to create a data container and add data to it later.
+
+```ts
+export function myReport(){
+  const container = new Container();
+  container.addHeader('My Header');
+  return container.get();
+}
+
+dataViewer.addContainer(myReport());
+dataViewer.start();
+```
+
+## Support Custom Server
+
+You can use the `registerMiddleware` method to integrate with your existing server.
+
+```ts
+  const getUsers = async () => (await fetch('https://jsonplaceholder.typicode.com/users')).json();
+
+const dataViewer = new DataViewer({
+  path: '/viewer',
+});
+
+dataViewer.addHeader('User Table');
+dataViewer.addTable(await getUsers());
+
+const app = express();
+dataViewer.registerMiddleware(app);
+
+app.listen(3000, async () => console.log(`Already servered on http://localhost:3000/viewer`));
+```
+
+## Support Custom Logger
+
+You can use the `logger` option to integrate with your existing log, 
+this example uses [pino](https://github.com/pinojs/pino) log
+
+```ts
+import pino from 'pino';
+const logger = pino();
+
+const stringLogger = {
+  log: (message: string) => logger.info(message),
+  debug: (message: string) => logger.debug(message),
+  info: (message: string) => logger.info(message),
+  warn: (message: string) => logger.warn(message),
+  error: (message: string) => logger.error(message),
+};
+
+const dataViewer = new DataViewer({
+  path: '/viewer',
+  logger: stringLogger,
+}).start();
+```
+
 ## Idea Behind the Scene 
 
 - Utilizes [Express.js](https://expressjs.com/) to run [EJS Templates](https://ejs.co/) by taking data from the server-side (Node.js) and rendering it using [DataTables](https://datatables.net/) jQuery to create the table.
 - Implements [Socket.io](https://socket.io/) for handling real-time events.
 
-## **Manual**
+## **API References**
+
+### Disable Live Reload
+
+By default, `start` method enables live reload automatically. You can disable live reload by setting the `enableLiveReload` option to `false`.
+
+```ts
+const dataViewer = new DataViewer({
+  enableLiveReload: false,
+})
+dataViewer.start();
+```
+
+When use use the custom server by `DataViewer.registerMiddleware` method, you don't need to set `enableLiveReload` option. Because it's already disabled by default.
 
 ### **Custom Cell Formatter Function**
 
@@ -75,23 +152,25 @@ In this example, the cell formatter checks if the cell value is an object, and i
 
 ### **Setup Log Level**
 
-The package uses the [pino](https://github.com/pinojs/pino) package internally. Example: set up **`debug`** log level.
+`DataViewer.start` method has built-in express server and uses the [pino](https://github.com/pinojs/pino) package internally. Example: set up **`debug`** log level.
 
 ```ts
-dataViewer.setOption({ 
-  logger: {
-    level: 'debug',
-  },
-});
+dataViewer
+  .start({
+    loggerOption: {
+      level: 'debug',
+    }
+  });
 ```
 
 ### **Setup Port**
 
 Example: Set up the server to run on port 5000.
 ```ts
-dataViewer.setOption({ 
-  port: 5000
-});
+dataViewer
+  .start({
+    port: 5000,
+  });
 ```
 
 ### **Setup View (EJS Template) Directory**
@@ -108,7 +187,7 @@ By default, the viewDirectory is set to `__dirname + '/views'`.
 
 ### **Create a New Instance**
 
-Rarely needed, but you can create a new instance.
+You can create a new instance.
 
 ```ts
 import { DataViewer } from '@thaitype/data-viewer-server';
